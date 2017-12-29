@@ -1,25 +1,11 @@
-\documentclass[prd, nofootinbib, floatfix, 11pt, tightenlines, times]{article}
-\usepackage[paperwidth=8.5in,paperheight=11in,centering,margin=1.0in]{geometry}
-\usepackage[pdftex]{graphicx}
-\usepackage{natbib}
-\usepackage[toc,page]{appendix}
+\documentclass[DM,toc]{lsstdoc}
+
 \usepackage{subfig}
 \usepackage{fancyvrb}
-\usepackage{hyperref} 
-
-% pdflatex W14report.tex; bibtex W14report; pdflatex W14report; pdflatex W14report
-
-% Border around the figures
-%\usepackage{float}
-%\floatstyle{boxed}
-%\restylefloat{figure}
 \usepackage{framed}
 
-\def\figdir{../figures}
-\def\pasp{{\it PASP}}
-\def\aap{{\it Astr.~Ap.}}     %Astronomy & Astrophysics%
-\def\aaps{{\it A\&AS}}
-\def\apj{{\it ApJ}}
+\graphicspath{{./figures/}}
+
 \def\A{{\tt A}}
 \def\B{{\tt B}}
 \def\C{{\tt C}}
@@ -27,13 +13,32 @@
 \def\E{{\tt E}}
 \def\P{{\tt P}}
 
-\title{\vspace{-22mm} \Large{Report on Winter 2014 Production: Image Differencing}}
+\title{Report on Winter 2014 Production: Image Differencing}
 \date{\today}
 \author{
-%  Andrew Becker, Simon Krughoff, Andrew Connolloy {\it for LSST Data Management}
+Andrew Becker, Simon Krughoff, Andrew Connolly
 }
+
+\setDocChangeRecord{%
+\addtohist{}{2014-05-30}{Initial version.}{A.~Becker}
+\addtohist{1}{2017-12-29}{Converted to DMTN-069.}{T.~Jenness}
+%\addtohist{2}{yyyy-mm-dd}{Future changes}{Future person}
+}
+
+\setDocRef{DMTN-069}
+\date{2014-05-30}
+\setDocUpstreamLocation{\url{https://github.com/lsst-dm/dmtn-069}}
+
+\setDocAbstract{%
+The goals of this Winter 2014 (W14) task are to investigate the
+effects of differential chromatic refraction (DCR) on the rate of
+false positives in image differences.
+}
+
 \begin{document}
-\maketitle\vspace{-8mm}
+\maketitle
+
+\section{Summary}
 
 The goals of this Winter 2014 (W14) task are to investigate the
 effects of differential chromatic refraction (DCR) on the rate of
@@ -111,10 +116,6 @@ DiaSources tend to overestimate the amplitude of the effect, with a
 dependence on seeing.  Finally, we provide extensive documentation on
 the generation and data reduction of image simulations, how to design
 DCR into the data, and how to interpret the results.
-
-\clearpage
-\tableofcontents
-\clearpage
 
 \section{Production Scope and Goals}
 
@@ -324,7 +325,7 @@ This subtask was not undertaken, and is deferred to a future analysis.
 
 We first review the expected signature of differential chromatic
 refraction in the image simulations.  We use the formalism of
-\cite{1982PASP...94..715F} throughout.
+\citet{1982PASP...94..715F} throughout.
 
 The wavelength--dependent index of refraction of the atmosphere,
 $n(\lambda)$, may be represented as
@@ -338,7 +339,7 @@ and water vapor corrections may be expressed as:
 \label{eqn:dcr}
 C1(P,T) & = & P \times \frac{1 + (1.049 - 0.0157~T) \times 10^{-6}~P}{720.883 * (1 + 0.003661~T)} \\
 C2(f,T) & = & 10^{-6} \times f \times \frac{0.0624 - 0.000680/\lambda^2}{1 + 0.003661 * T} \\
-n(\lambda) - 1 & = & (n_0(\lambda) - 1) * C1 - C2 
+n(\lambda) - 1 & = & (n_0(\lambda) - 1) * C1 - C2
 \end{eqnarray}
 where $P$ is the ambient pressure in mm of mercury, $T$ is the
 temperature in Celsius, and $f$ is the water vapor pressure in mm of
@@ -359,7 +360,7 @@ on the angle towards zenith in the image.
 
 \begin{figure}[!t]
   \centering
-  \includegraphics[width=1.1\textwidth]{\figdir/DCR1.png}
+  \includegraphics[width=1.1\textwidth]{DCR1.png}
   \caption{{\bf Effective Spectral Energy Distributions} : The
     effective spectra of 5 reference objects -- a ``blue'' {\tt A0V},
     a reference {\tt G0V}, and a ``red'' {\tt M2.0V} star, along with
@@ -382,7 +383,7 @@ on the angle towards zenith in the image.
 \end{figure}
 \begin{figure}[!t]
   \centering
-  \includegraphics[width=1.1\textwidth]{\figdir/DCR2.png}
+  \includegraphics[width=1.1\textwidth]{DCR2.png}
   \caption{{\bf Refraction Amplitude vs. Filter and Spectral Energy
       Distribution}: The flux-weighted amplitude of refraction (in
     arcseconds) for each of the filtered SEDs in
@@ -424,7 +425,7 @@ Table~\ref{tab:dcramp}.
 
 \begin{figure}[!t]
   \centering
-  \includegraphics[width=1.1\textwidth]{\figdir/DCR3.png}
+  \includegraphics[width=1.1\textwidth]{DCR3.png}
   \caption{{\bf Differential Chromatic Refraction vs. Filter and
       Spectral Energy Distribution}: The differential chromatic
     refraction of all sources from Figure~\ref{fig:spectra} with
@@ -457,7 +458,7 @@ Table~\ref{tab:dcramp}.
 %images, as measured by the adaptive second moments of the {\tt Psf},
 %are systematically ($\sim 5\%$) smaller in the newer data.  This was
 %important during the analysis of the deconvolution data, as it
-%triggered a bug resolved in Ticket \#3143.  
+%triggered a bug resolved in Ticket \#3143.
 
 \begin{table}
 \centering
@@ -471,7 +472,7 @@ Seeing  & Prefilter    & W13  & W14 pipeline on W13 data   & W14   \\
 {\tt 2} & True         & 7    & 6                          & 6     \\
         & False        & 8    & 8                          & 6     \\
 {\tt 3} & True         & 3    & 3                          & 3     \\
-        & False        & 7    & 7                          & 3 
+        & False        & 7    & 7                          & 3
 \end{tabular}
 \caption[]{Summary of the results of subtask 1, which aims to
   reproduce the results of W13 using {\tt phoSim} v3.3.2 and the
@@ -569,10 +570,10 @@ Seeing   & Filter & N & N  \\
 %True 6866603 (True,) 9 2 0 2
 
 
-\begin{figure}[!H]
+\begin{figure}[!h]
   \centering
-  \subfloat[Prefiltering = False]{{\includegraphics[width=0.65\textwidth]{\figdir/outputs5b_doPreConvolveFalse_fp.png} }} \\
-  \subfloat[Prefiltering = True]{{\includegraphics[width=0.65\textwidth]{\figdir/outputs5b_doPreConvolveTrue_fp.png} }} \\
+  \subfloat[Prefiltering = False]{{\includegraphics[width=0.65\textwidth]{outputs5b_doPreConvolveFalse_fp.png} }} \\
+  \subfloat[Prefiltering = True]{{\includegraphics[width=0.65\textwidth]{outputs5b_doPreConvolveTrue_fp.png} }} \\
   \caption{{\bf Subtask 2: False Positive Rates vs. Theory}: Using the
     mean realized seeing for each passband and {\tt Opsim\_rawseeing}
     combination, we plot the expected numbers of false positives per
@@ -658,7 +659,7 @@ used script {\tt python/examineVariance.py} for this analysis.
 
 \begin{figure}[!ht]
   \centering
-  \includegraphics[width=1.1\textwidth]{\figdir/dcrPhoSim.png}
+  \includegraphics[width=1.1\textwidth]{dcrPhoSim.png}
   \caption{{\bf Designed Orientation of DCR in W14 PhoSim Runs}: This
     figure represents the anticipated orientations of DCR in the W14
     {\tt phoSim} data.  The x,y coordinate system is depicted, as well
@@ -703,12 +704,12 @@ Table~\ref{tab:dcramp}.
 
 \begin{figure}
     \centering
-    \subfloat[Visit A]{{\includegraphics[width=0.46\textwidth]{\figdir/outputs8bCA_dcr_wcs.png} }}
+    \subfloat[Visit A]{{\includegraphics[width=0.46\textwidth]{outputs8bCA_dcr_wcs.png} }}
     \qquad
-    \subfloat[Visit B]{{\includegraphics[width=0.46\textwidth]{\figdir/outputs8bCB_dcr_wcs.png} }} \\
-    \subfloat[Visit D]{{\includegraphics[width=0.46\textwidth]{\figdir/outputs8bCD_dcr_wcs.png} }}
+    \subfloat[Visit B]{{\includegraphics[width=0.46\textwidth]{outputs8bCB_dcr_wcs.png} }} \\
+    \subfloat[Visit D]{{\includegraphics[width=0.46\textwidth]{outputs8bCD_dcr_wcs.png} }}
     \qquad
-    \subfloat[Visit E]{{\includegraphics[width=0.46\textwidth]{\figdir/outputs8bCE_dcr_wcs.png} }} \\
+    \subfloat[Visit E]{{\includegraphics[width=0.46\textwidth]{outputs8bCE_dcr_wcs.png} }} \\
     \caption{{\bf Wcs-Derived Orientations of PhoSim Data}: These
       figures show the orientations of the Right Ascension and
       Declination axes (red), and Azimuth and Altitude axes (blue) of
@@ -811,7 +812,7 @@ Visit    & SED & Filter & Theory & {\tt Wcs} Offsets & Dipole Fit         & Dipo
    &             & $r$ & 0.0060'' & 0.0062$\pm$0.0006'' & $\cdots$ & $\cdots$ & $\cdots$ \\
    &             & $i$ & 0.0019'' & 0.0025$\pm$0.0005'' & $\cdots$ & $\cdots$ & $\cdots$ \\
    & {\tt M2.0V} & $g$ & 0.0424'' & 0.0385$\pm$0.0010'' & 0.201''  & 0.254''  & $\cdots$ \\
-   &             & $r$ & 0.0101'' & 0.0097$\pm$0.0006'' & $\cdots$ & $\cdots$ & $\cdots$ \\ 
+   &             & $r$ & 0.0101'' & 0.0097$\pm$0.0006'' & $\cdots$ & $\cdots$ & $\cdots$ \\
    &             & $i$ & 0.0061'' & 0.0057$\pm$0.0008'' & $\cdots$ & $\cdots$ & $\cdots$ \\
 \hline
 \E & {\tt A0V}   & $g$ & 0.0406'' & 0.0430$\pm$0.0027'' & 0.169''  & 0.235''  & 0.360''  \\
@@ -900,7 +901,7 @@ measurement.
 
 \begin{figure}[!ht]
   \centering
-  \includegraphics[width=1.0\textwidth]{\figdir/heatmapFalse.png}
+  \includegraphics[width=1.0\textwidth]{heatmapFalse.png}
   \caption{{\bf Number of False Positives, Postfiltering}: This figure
     shows the median number of false positives across the nine {\tt
       raft=2,2} CCDs.  The first row of information shows these
@@ -928,7 +929,7 @@ measurement.
 
 \begin{figure}[!ht]
   \centering
-  \includegraphics[width=1.0\textwidth]{\figdir/heatmapTrue.png}
+  \includegraphics[width=1.0\textwidth]{heatmapTrue.png}
   \caption{{\bf Number of False Positives, Prefiltering}: Same as
     Figure~\ref{fig:heatpost}, but using prefiltering of the science
     image with its Psf.  The numbers of false positives is generally
@@ -999,7 +1000,7 @@ b * log_{10}~x$, finding:
 %M-star True:  logy = 4.5773 + 2.6279 logx.  logy=0 at x=0.0181
 %M-star False: logy = 4.7113 + 2.6713 logx.  logy=0 at x=0.0172
 {\tt M2.0V} & {\rm Prefilter=True}  & log_{10}~y = 4.58 + 2.63 ~log_{10}~x \\ \nonumber
-            & {\rm Prefilter=False} & log_{10}~y = 4.71 + 2.67 ~log_{10}~x 
+            & {\rm Prefilter=False} & log_{10}~y = 4.71 + 2.67 ~log_{10}~x
 \end{eqnarray}
 We plot these as the solid lines in Figure~\ref{fig:fpregress}.  The
 curves are significantly different for the red and blue stars, which
@@ -1032,7 +1033,7 @@ as above and find:
 %M-star True:  logy = 3.0538 + 2.5494 logx.  logy=-2 at x=0.0104
 %M-star False: logy = 3.1761 + 2.5848 logx.  logy=-2 at x=0.0099
 {\tt M2.0V} & {\rm Prefilter=True}  & log_{10}~y = 3.05 + 2.55 ~log_{10}~x \\ \nonumber
-            & {\rm Prefilter=False} & log_{10}~y = 3.18 + 2.58 ~log_{10}~x 
+            & {\rm Prefilter=False} & log_{10}~y = 3.18 + 2.58 ~log_{10}~x
 \end{eqnarray}
 where now $log~y$ represents the log--likelihood that a given object
 will yield a false positive.  These curves cross the 1\% likelihood
@@ -1093,8 +1094,8 @@ astrometric reference frame used.
 
 \begin{figure}[!ht]
   \centering
-  \subfloat[Prefiltering = False]{{\includegraphics[width=0.65\textwidth]{\figdir/regressFalse.png} }} \\
-  \subfloat[Prefiltering = True]{{\includegraphics[width=0.65\textwidth]{\figdir/regressTrue.png} }} \\
+  \subfloat[Prefiltering = False]{{\includegraphics[width=0.65\textwidth]{regressFalse.png} }} \\
+  \subfloat[Prefiltering = True]{{\includegraphics[width=0.65\textwidth]{regressTrue.png} }} \\
   \caption{{\bf DCR Impact on False Positives}: We plot the number of
     false positives that associate with {\tt A0V} stars as the blue
     points, and {\tt M2.0V} stars as the red points.  We normalize by
@@ -1117,8 +1118,8 @@ astrometric reference frame used.
 
 \begin{figure}[!ht]
   \centering
-  \subfloat[Prefiltering = False]{{\includegraphics[width=0.65\textwidth]{\figdir/regressFalse2.png} }} \\
-  \subfloat[Prefiltering = True]{{\includegraphics[width=0.65\textwidth]{\figdir/regressTrue2.png} }} \\
+  \subfloat[Prefiltering = False]{{\includegraphics[width=0.65\textwidth]{regressFalse2.png} }} \\
+  \subfloat[Prefiltering = True]{{\includegraphics[width=0.65\textwidth]{regressTrue2.png} }} \\
   \caption{{\bf DCR Impact on False Positives}: Same as
     Figure~\ref{fig:fpregress}, but the {\tt y}--axis value represents
     the likelihood that an object of each spectral type will lead to a
@@ -1131,7 +1132,7 @@ astrometric reference frame used.
 
 \begin{figure}[!ht]
   \centering
-  \includegraphics[width=1.0\textwidth]{\figdir/DCR_001.png} 
+  \includegraphics[width=1.0\textwidth]{DCR_001.png}
   \caption{{\bf Geometric Basis for Figure~\ref{fig:fpsummary}}: This
     figure provides the geometric basis for the study of astrometric
     offsets induced by DCR, as a function of difference in airmass and
@@ -1154,16 +1155,16 @@ astrometric reference frame used.
 
 \begin{figure}[!ht]
   \centering
-  \subfloat[$g$--band, 1.0 airmass template]{{\includegraphics[width=0.29\textwidth]{\figdir/dcrG1.png} }}
+  \subfloat[$g$--band, 1.0 airmass template]{{\includegraphics[width=0.29\textwidth]{dcrG1.png} }}
   \qquad
-  \subfloat[$r$--band, 1.0 airmass template]{{\includegraphics[width=0.29\textwidth]{\figdir/dcrR1.png} }} 
+  \subfloat[$r$--band, 1.0 airmass template]{{\includegraphics[width=0.29\textwidth]{dcrR1.png} }}
   \qquad
-  \subfloat[$i$--band, 1.0 airmass template]{{\includegraphics[width=0.29\textwidth]{\figdir/dcrI1.png} }} \\
-  \subfloat[$g$--band, 1.25 airmass template]{{\includegraphics[width=0.29\textwidth]{\figdir/dcrG125.png} }}
+  \subfloat[$i$--band, 1.0 airmass template]{{\includegraphics[width=0.29\textwidth]{dcrI1.png} }} \\
+  \subfloat[$g$--band, 1.25 airmass template]{{\includegraphics[width=0.29\textwidth]{dcrG125.png} }}
   \qquad
-  \subfloat[$r$--band, 1.25 airmass template]{{\includegraphics[width=0.29\textwidth]{\figdir/dcrR125.png} }} 
+  \subfloat[$r$--band, 1.25 airmass template]{{\includegraphics[width=0.29\textwidth]{dcrR125.png} }}
   \qquad
-  \subfloat[$i$--band, 1.25 airmass template]{{\includegraphics[width=0.29\textwidth]{\figdir/dcrI125.png} }} \\
+  \subfloat[$i$--band, 1.25 airmass template]{{\includegraphics[width=0.29\textwidth]{dcrI125.png} }} \\
   \caption{{\bf DCR Offsets vs. Airmass and Orientation}: Each of
     these panels shows the amplitude of the relative DCR vector in
     arcseconds, calculated as a function of reference airmass (1.0 top
@@ -1189,7 +1190,7 @@ astrometric reference frame used.
 %    of airmass and orientation dependence on the DCR offsets.  As
 %    demonstrated by the red star, observations at a similar airmass
 %    but having differences in orientation of 35 degrees will yield
-%    significant false positives.  
+%    significant false positives.
 %
     This figure was created using the script {\tt python/DCR3.py}.}
   \label{fig:fpsummary}
@@ -1206,7 +1207,7 @@ information include the image coaddition and differencing tasks.  The
 latter has a double dependency on DCR, since it uses coadded templates
 whose generation themselves depends on an adequate treatment of DCR.
 We expect to work towards this resolution in the upcoming Summer 2014
-production (S14) cycle.  
+production (S14) cycle.
 
 Modeling the expected effects of DCR should be relatively
 straightforward, assuming the colors of most objects are known from
@@ -1244,7 +1245,7 @@ option is the one described above, where DCR is compensated for at the
 per--object pixel level, either during pixel remapping/resampling or
 during {\tt Psf}/{\tt Psf}--matching kernel modeling.  We can take
 some guidance from the analysis presented in Section~3.3 of
-\cite{1999ApJ...521..602A}, who use a per--pixel color map to
+\citet{1999ApJ...521..602A}, who use a per--pixel color map to
 compensate for DCR.  A necessary improvement over that technique is
 the need to undertake this operation in a way that preserves the PSF.
 A final option is to make this a consideration during the acquisition
@@ -1355,12 +1356,11 @@ Other options are both solicited and welcome.
 
 \end{itemize}
 
-\clearpage
-\bibliographystyle{apj}
-\bibliography{refs}
+\bibliography{lsst,refs,books,refs_ads}
 
-\clearpage
-\begin{appendices}
+\appendix
+
+\section{Test files}
 
 The root directory for this analysis is located on the NCSA machines
 at \\{\tt /nfs/lsst/home/becker/Winter2014}.  All files not included in
@@ -1430,9 +1430,9 @@ generating instance catalogs from a master base catalog, or the
 process of using calibration data to run the simulated images through
 {\tt processCcd.py}, which does (amongst other operations) the
 assembly of amp images into CCD images and instrument signature
-removal.  
+removal.
 
-The process is valid for {\tt phoSim} version 3.3.2.  
+The process is valid for {\tt phoSim} version 3.3.2.
 
 \subsection{Setting up PhoSim}
 
@@ -1460,7 +1460,7 @@ echo 'envPrepend (PATH, ${PRODUCT_DIR})' >> ups/phosim.table
 echo 'envPrepend (PATH, ${PRODUCT_DIR}/bin)' >> ups/phosim.table
 setup -k -r .
 \end{Verbatim}
-}  
+}
 
 Note that you will have to declare the locations of {\tt cfitsio} and
 {\tt fftw3} by hand, and must enter the full paths above (i.e. not the
@@ -1482,15 +1482,15 @@ itself.  These are included in this repository for all sims runs.  A
 control file (named {\tt clean.params.beta} here) must also be
 included, and turns off/on various effects in the sims, such as sky
 backgrounds and tracking errors.  A call to the {\tt phoSim} package
-then looks like: 
+then looks like:
 
 {\small
 \begin{Verbatim}[frame=single]
-python $PHOSIM_DIR/phosim.py $PWD/2001000.trim -w $PWD/2001000.work -o $PWD/2001000.out 
-  -c $PWD/clean.params.beta 
+python $PHOSIM_DIR/phosim.py $PWD/2001000.trim -w $PWD/2001000.work -o $PWD/2001000.out
+  -c $PWD/clean.params.beta
   -s "R22_S00|R22_S01|R22_S02|R22_S10|R22_S11|R22_S12|R22_S20|R22_S21|R22_S22" -p 16
 \end{Verbatim}
-} 
+}
 where {\tt -w} defines the work directory (which must already exist),
 {\tt -o} the output directory (which must already exist), {\tt -c} the
 control file, {\tt -s} the sensors to simulate, and {\tt -p} the
@@ -1508,7 +1508,7 @@ cd sims8/
 foreach i (*.out)
  cd $i
  python ../../python/rename_images.py ../../inputs8 *E000.fits.gz
- cd ../ 
+ cd ../
  end
 \end{Verbatim}
 }
@@ -1529,7 +1529,7 @@ A calibration file must be created for {\tt astrometry.net}, which is
 used as the photometric and astrometric reference.  Typically this is
 created from a base catalog, but since I am starting with instance
 catalogs here, the process is somewhat different.  I use one of the
-input trim files for this process as follows: 
+input trim files for this process as follows:
 
 {\footnotesize
 \begin{Verbatim}[frame=single]
@@ -1540,12 +1540,12 @@ setup -r /lsst/home/krughoff/lsst/lsst_devel/Linux64/astrometry.net-0.38/astrome
 text2fits.py 2002000.ref 2002000.fits
 setenv P 1402120
 build-index -i 2002000.fits -o index-${P}00.fits -I ${P}00 -P 0 -S r -n 100 -L 20 -E -j 0.4 -r 1
-build-index -1 index-${P}00.fits -o index-${P}01.fits -I ${P}01 -P 1 -S r -L 20 -E -M -j 0.4 
-build-index -1 index-${P}00.fits -o index-${P}02.fits -I ${P}02 -P 2 -S r -L 20 -E -M -j 0.4 
-build-index -1 index-${P}00.fits -o index-${P}03.fits -I ${P}03 -P 3 -S r -L 20 -E -M -j 0.4 
-build-index -1 index-${P}00.fits -o index-${P}04.fits -I ${P}04 -P 4 -S r -L 20 -E -M -j 0.4 
-ls index-1402120* | awk '{printf("modhead %s+7 REFCAT '2002000'\n",$1)}' | sh     
-setup astrometry_net 0.30  
+build-index -1 index-${P}00.fits -o index-${P}01.fits -I ${P}01 -P 1 -S r -L 20 -E -M -j 0.4
+build-index -1 index-${P}00.fits -o index-${P}02.fits -I ${P}02 -P 2 -S r -L 20 -E -M -j 0.4
+build-index -1 index-${P}00.fits -o index-${P}03.fits -I ${P}03 -P 3 -S r -L 20 -E -M -j 0.4
+build-index -1 index-${P}00.fits -o index-${P}04.fits -I ${P}04 -P 4 -S r -L 20 -E -M -j 0.4
+ls index-1402120* | awk '{printf("modhead %s+7 REFCAT '2002000'\n",$1)}' | sh
+setup astrometry_net 0.30
 cp -r /nfs/lsst/home/becker/Winter2014/astrometry_net_data/ups .
 setup -k -r .
 \end{Verbatim}
@@ -1556,15 +1556,15 @@ naming convention defined by environment variable {\tt P} above:
 
 {\small
 \begin{Verbatim}[frame=single]
-cat astrometry_net_data8/andConfig.py 
+cat astrometry_net_data8/andConfig.py
   root.starGalaxyColumn = "starnotgal"
   filters = ('u', 'g', 'r', 'i', 'z', 'y')
   root.magColumnMap = dict([(f,f) for f in filters])
   root.magErrorColumnMap = dict([(f, f + '_err') for f in filters])
   root.indexFiles = [
-      'index-140212000.fits',  
-      'index-140212001.fits',  
-      'index-140212002.fits',  
+      'index-140212000.fits',
+      'index-140212001.fits',
+      'index-140212002.fits',
       'index-140212003.fits',
       'index-140212004.fits',
       ]
@@ -1588,19 +1588,19 @@ To difference all 3 seeing images from visit \A\ with a template from visit \C,
 use the following command:
 {\small
 \begin{Verbatim}[frame=single]
-$PIPE_TASKS_DIR/bin/imageDifferenceWinter2013.py inputs8 --id 
-  visit=3000001^3000002^3000003 
-  --output=/nfs/lsst/home/becker/Winter2014/outputs8CA_doPreConvolveFalse 
-  --configfile imageDifferenceConfigGstar.py --config diaSourceMatchRadius=2.0 
-  doAddCalexpBackground=False winter2013TemplateId=3002000  doPreConvolve=False 
-  subtract.kernel.active.singleKernelClipping=False 
-  subtract.kernel.active.kernelSumClipping=False 
-  subtract.kernel.active.spatialKernelClipping=False 
-  subtract.kernel.active.scaleByFwhm=True 
-  subtract.kernel.active.spatialKernelOrder=5 subtract.kernel.active.alardNGauss=3 
-  subtract.kernel.active.alardDegGauss="[5,2,2]" 
-  subtract.kernel.active.alardSigGauss="[1.0,1.0,1.0]" 
-  doSelectDcrCatalog=True --clobber-config -j 27 
+$PIPE_TASKS_DIR/bin/imageDifferenceWinter2013.py inputs8 --id
+  visit=3000001^3000002^3000003
+  --output=/nfs/lsst/home/becker/Winter2014/outputs8CA_doPreConvolveFalse
+  --configfile imageDifferenceConfigGstar.py --config diaSourceMatchRadius=2.0
+  doAddCalexpBackground=False winter2013TemplateId=3002000  doPreConvolve=False
+  subtract.kernel.active.singleKernelClipping=False
+  subtract.kernel.active.kernelSumClipping=False
+  subtract.kernel.active.spatialKernelClipping=False
+  subtract.kernel.active.scaleByFwhm=True
+  subtract.kernel.active.spatialKernelOrder=5 subtract.kernel.active.alardNGauss=3
+  subtract.kernel.active.alardDegGauss="[5,2,2]"
+  subtract.kernel.active.alardSigGauss="[1.0,1.0,1.0]"
+  doSelectDcrCatalog=True --clobber-config -j 27
 \end{Verbatim}
 }
 
@@ -1646,7 +1646,7 @@ contained in the base catalog, {\tt kp01\_9750.fits\_g45\_9830.gz},
 for every tenth object starting at object \#0, and the most populous
 red object in the catalog {\tt m2.0Full.dat.gz} for every tenth object
 starting at object \#5.  These correspond to spectral types {\tt A0V}
-and {\tt M2.0V}, respectively.  
+and {\tt M2.0V}, respectively.
 
 Because the magnitudes in the trim files represent a 500nm magnitude
 (approximate $g$--band), color corrections to the requested magnitudes
@@ -1721,7 +1721,7 @@ passband--dependent quality of the difference images.
 
 \begin{figure}[!ht]
   \centering
-  \includegraphics[width=0.5\textwidth]{\figdir/outputs8bCA_g_doPreConvolveFalse_refract_crop.png}
+  \includegraphics[width=0.5\textwidth]{outputs8bCA_g_doPreConvolveFalse_refract_crop.png}
   \caption{{\bf Refraction}: This figure depicts the amplitude and
     orientation of the refraction vector in the visit \A, {\tt
       raft=2,2 sensor=1,1 filter=g}, seeing value {\tt 2} data.  The
@@ -1735,7 +1735,7 @@ passband--dependent quality of the difference images.
 
 \begin{figure}[!ht]
   \centering
-  \includegraphics[width=1.0\textwidth]{\figdir/outputs8b_g_doPreConvolveFalse_dcr_crop.png}
+  \includegraphics[width=1.0\textwidth]{outputs8b_g_doPreConvolveFalse_dcr_crop.png}
   \caption{{\bf Differential Chromatic Refraction and Difference Image
       Quality, $g$--band}: This set of panels demonstrates the amount
     of refraction (top row), differential refraction with respect to
@@ -1768,7 +1768,7 @@ passband--dependent quality of the difference images.
 
 \begin{figure}[!ht]
   \centering
-  \includegraphics[width=1.0\textwidth]{\figdir/outputs8b_r_doPreConvolveFalse_dcr_crop.png}
+  \includegraphics[width=1.0\textwidth]{outputs8b_r_doPreConvolveFalse_dcr_crop.png}
   \caption{{\bf Differential Chromatic Refraction and Difference Image
       Quality, $r$--band}: Same as Figure~\ref{fig:dcrimg}, but for
     $r$--band data.  This figure was created using the script {\tt
@@ -1778,7 +1778,7 @@ passband--dependent quality of the difference images.
 
 \begin{figure}[!ht]
   \centering
-  \includegraphics[width=1.0\textwidth]{\figdir/outputs8b_i_doPreConvolveFalse_dcr_crop.png}
+  \includegraphics[width=1.0\textwidth]{outputs8b_i_doPreConvolveFalse_dcr_crop.png}
   \caption{{\bf Differential Chromatic Refraction and Difference Image
       Quality, $i$--band}: Same as Figure~\ref{fig:dcrimg}, but for
     $i$--band data.  This figure was created using the script {\tt
@@ -1788,7 +1788,7 @@ passband--dependent quality of the difference images.
 
 \begin{figure}[!ht]
   \centering
-  \includegraphics[width=1.0\textwidth]{\figdir/outputs8b_g_doPreConvolveTrue_dcr_crop.png}
+  \includegraphics[width=1.0\textwidth]{outputs8b_g_doPreConvolveTrue_dcr_crop.png}
   \caption{{\bf Differential Chromatic Refraction and Difference Image
       Quality, Prefiltering}: Same as Figure~\ref{fig:dcrimg}, but
     using prefiltering of the science image with its Psf.  This figure
@@ -1796,7 +1796,5 @@ passband--dependent quality of the difference images.
   \label{fig:dcrimgpre}
 \end{figure}
 
-
-\end{appendices}
 
 \end{document}
